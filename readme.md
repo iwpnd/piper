@@ -10,7 +10,7 @@ go get -u github.com/iwpnd/piper
 
 ## Usage
 
-```
+```go
 package main
 
 import (
