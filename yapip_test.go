@@ -38,3 +38,26 @@ func TestInExtent(t *testing.T) {
 		}
 	}
 }
+
+func TestInRing(t *testing.T) {
+	test := []struct {
+		ring     [][]float64
+		p        []float64
+		expected bool
+	}{
+		// inside
+		{
+			ring:     [][]float64{{0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}},
+			p:        []float64{0.5, 0.5},
+			expected: true,
+		},
+	}
+
+	for _, test := range test {
+		got := inRing(test.p, test.ring)
+
+		if got != test.expected {
+			t.Errorf("expected %+v, got: %+v", test.expected, got)
+		}
+	}
+}

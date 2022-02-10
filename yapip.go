@@ -30,3 +30,34 @@ func inExtent(p []float64, ring [][]float64) bool {
 		((s <= lat) && (lat <= n)) ||
 		((n <= lat) && (lat <= s)))
 }
+
+func inRing(p []float64, ring [][]float64) bool {
+	if !inExtent(p, ring) {
+		return false
+	}
+
+	first, last := ring[0], ring[len(ring)-1]
+	if first[0] == last[0] && first[1] == last[1] {
+		ring = ring[0 : len(ring)-1]
+	}
+
+	lon := p[0]
+	lat := p[1]
+	counter := 0
+
+	for i, j := 0, len(ring)-1; i < len(ring); i, j = i+1, i {
+		startLon := ring[i][0]
+		startLat := ring[i][1]
+		endLon := ring[j][0]
+		endLat := ring[j][1]
+
+		intersects := ((startLat > lat) != (endLat > lat)) &&
+			(lon < ((endLon-startLon)*(lat-startLat))/(endLat-startLat)+startLon)
+
+		if intersects {
+			counter++
+		}
+	}
+
+	return counter%2 != 0
+}
