@@ -1,3 +1,3 @@
-module github.com/iwpnd/yapip
+module github.com/iwpnd/piper
 
 go 1.17

@@ -1,4 +1,4 @@
-package yapip
+package piper
 
 import (
 	"testing"
