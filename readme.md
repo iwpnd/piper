@@ -10,6 +10,8 @@ go get -u github.com/iwpnd/piper
 
 ## Usage
 
+Vanilla
+
 ```go
 package main
 
@@ -24,8 +26,40 @@ func main() {
   polygon := [][][]float64{{{0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}}}
 
   pip := piper.Pip(p, polygon)
-
   fmt.Printf("Point in Polygon: %+v\n", pip)
+}
+```
+
+Or using [github/paulmach/go.geosjon](https://github.com/paulmach/go.geojson)
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+
+	"github.com/iwpnd/piper"
+	"github.com/paulmach/go.geojson"
+)
+
+func main() {
+	p := []float64{0.5, 0.5}
+
+	raw, err := ioutil.ReadFile("my_feature.geojson")
+	if err != nil {
+		panic("something went wrong")
+	}
+
+	var feature geojson.Feature
+	err = json.Unmarshal(raw, &feature)
+	if err != nil {
+		panic("something went wrong")
+	}
+
+	pip := piper.Pip(p, feature.Geometry.Polygon)
+	fmt.Printf("Point in Polygon: %+v\n", pip)
 }
 ```
 
