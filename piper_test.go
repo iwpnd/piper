@@ -1,6 +1,8 @@
 package piper
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"testing"
 )
 
@@ -292,5 +294,84 @@ func TestInPolygonWithHoles(t *testing.T) {
 		if got != test.expected {
 			t.Errorf("case: %s - expected %+v, got: %+v", test.tcase, test.expected, got)
 		}
+	}
+}
+
+var simplePolygon = [][][]float64{
+	{
+		{-3.0988311767578125, 40.837710162420045},
+		{-3.121490478515625, 40.820045086716505},
+		{-3.0978012084960938, 40.80237530523985},
+		{-3.0754852294921875, 40.8210843390845},
+		{-3.0988311767578125, 40.837710162420045},
+	},
+}
+
+var simplePolygonWithHoles = [][][]float64{
+	{
+		{-3.0988311767578125, 40.837710162420045},
+		{-3.121490478515625, 40.820045086716505},
+		{-3.0978012084960938, 40.80237530523985},
+		{-3.0754852294921875, 40.8210843390845},
+		{-3.0988311767578125, 40.837710162420045},
+	},
+	{
+		{-3.0988311767578125, 40.82783908257347},
+		{-3.1098175048828125, 40.820045086716505},
+		{-3.0988311767578125, 40.81147063339219},
+		{-3.086471557617187, 40.820304901335035},
+		{-3.0988311767578125, 40.82783908257347},
+	},
+}
+
+func BenchmarkPipSimpleInside(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		Pip([]float64{-3.0878448486328125, 40.81497849824719}, simplePolygon)
+	}
+}
+
+func BenchmarkPipSimpleOutside(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		Pip([]float64{-3.069477081298828, 40.8210843390845}, simplePolygon)
+	}
+}
+
+func BenchmarkPipSimpleInsideWithHoles(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		Pip([]float64{-3.080635070800781, 40.82056471493589}, simplePolygonWithHoles)
+	}
+}
+
+func BenchmarkPipSimpleOutsideWithHoles(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		Pip([]float64{-3.0816650390625, 40.80809251416925}, simplePolygonWithHoles)
+	}
+}
+
+type Geometry struct {
+	Type        string
+	Coordinates [][][]float64
+}
+
+type Feature struct {
+	Type     string
+	Geometry Geometry
+}
+
+func BenchmarkPipComplexInside(b *testing.B) {
+	raw, err := ioutil.ReadFile("./testdata/berlin.geojson")
+	if err != nil {
+		b.Fatal("could not load test data", err)
+	}
+
+	var complexPolygon Feature
+	err = json.Unmarshal(raw, &complexPolygon)
+
+	if err != nil {
+		b.Fatal("could not load test feature", err)
+	}
+
+	for n := 0; n < b.N; n++ {
+		Pip([]float64{-3.080635070800781, 40.82056471493589}, complexPolygon.Geometry.Coordinates)
 	}
 }

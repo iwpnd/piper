@@ -29,6 +29,20 @@ func main() {
 }
 ```
 
+## Benchmark
+
+```
+goos: darwin
+goarch: amd64
+pkg: github.com/iwpnd/piper
+cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+BenchmarkPipSimpleInside-12              	43108360	        27.73 ns/op
+BenchmarkPipSimpleOutside-12             	44025870	        27.53 ns/op
+BenchmarkPipSimpleInsideWithHoles-12     	27355524	        42.84 ns/op
+BenchmarkPipSimpleOutsideWithHoles-12    	42239286	        28.22 ns/op
+BenchmarkPipComplexInside-12             	  474601	        2323 ns/op
+```
+
 ## License
 
 MIT

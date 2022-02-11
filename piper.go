@@ -52,10 +52,6 @@ func inExtent(p []float64, ring [][]float64) bool {
 }
 
 func inRing(p []float64, ring [][]float64) bool {
-	if !inExtent(p, ring) {
-		return false
-	}
-
 	first, last := ring[0], ring[len(ring)-1]
 	if first[0] == last[0] && first[1] == last[1] {
 		ring = ring[0 : len(ring)-1]
@@ -97,6 +93,12 @@ func hasHoles(polygon [][][]float64) bool {
 func Pip(p []float64, polygon [][][]float64) bool {
 	outer := polygon[0]
 	inPolygon := false
+
+	// speeds up operations on complex polygons, insignifically slows
+	// down on simple polygons
+	if !inExtent(p, outer) {
+		return false
+	}
 
 	if inRing(p, outer) {
 		inPolygon = true
