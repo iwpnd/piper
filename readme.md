@@ -30,7 +30,7 @@ func main() {
 }
 ```
 
-Or using [github/paulmach/go.geosjon](https://github.com/paulmach/go.geojson)
+Or using [github/paulmach/go.geojson](https://github.com/paulmach/go.geojson)
 
 ```go
 package main
