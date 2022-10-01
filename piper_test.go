@@ -2,7 +2,7 @@ package piper
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -359,7 +359,7 @@ type Feature struct {
 }
 
 func BenchmarkPipComplexInside(b *testing.B) {
-	raw, err := ioutil.ReadFile("./testdata/berlin.geojson")
+	raw, err := os.ReadFile("./testdata/berlin.geojson")
 	if err != nil {
 		b.Fatal("could not load test data", err)
 	}
