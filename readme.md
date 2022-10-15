@@ -22,7 +22,7 @@ import (
   )
 
 func main() {
-  p := []float64{0.5,0.5}
+  p := []float64{0.5,0.5} // [longitude, latitude]
   polygon := [][][]float64{{{0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}}}
 
   pip := piper.Pip(p, polygon)
@@ -45,7 +45,7 @@ import (
 )
 
 func main() {
-	p := []float64{0.5, 0.5}
+	p := []float64{0.5, 0.5} // [longitude, latitude]
 
 	raw, err := ioutil.ReadFile("my_feature.geojson")
 	if err != nil {
